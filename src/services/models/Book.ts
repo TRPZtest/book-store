@@ -1,7 +1,11 @@
-interface Book {
+import { Category } from "./Category";
+import { Tag } from "./Tag";
+
+
+export interface Book {
     id: number;
-    Name: string;
-    Description: string;
-    Category: Category;
-    Tags: Tag[];
+    name: string;
+    description: string;
+    category: Category;
+    tags: Tag[];
 }

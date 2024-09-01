@@ -1,32 +1,30 @@
-import React, { useEffect, useState } from'react';
-import logo from './logo.svg';
 import './App.css';
-import axios from 'axios';
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BookList } from './components/BookList';
+import { Box, Container, Typography } from '@mui/material';
+import { Bottom } from './components/Bottom';
+import { EditBook } from './components/EditBook';
+import { AddBook } from './components/AddBook';
+import { Navbar } from './components/Navbar';
 
 function App() {
 
+  
+    return (   
+        <Container>            
+            <BrowserRouter>
+                <Navbar/>
+                    <Routes>
+                        <Route path="/" element={<BookList />} />
+                        <Route path="/books/list" element={<BookList />} />
+                        <Route path="/books/edit/:id" element={<EditBook />} />
+                        <Route path="/books/add/" element={<AddBook />} />
+                    </Routes>
+                </BrowserRouter>    
+            <Bottom/>  
+        </Container>                     
+    );
 
-  const [data, setData] = useState({ hits: [] });
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
 }
 
 export default App;
