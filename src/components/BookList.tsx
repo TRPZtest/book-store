@@ -43,21 +43,21 @@ export function BookList() {
                             <ListItemText                         
                                 primary={book.name}
                                 secondary={
-                                    <span>                                       
-                                        <Typography component="div" variant="body2" color="textPrimary">
+                                    <>
+                                      <Typography component="span" variant="body2" color="textPrimary">
                                             Category: {book.category.name}
-                                        </Typography>                                       
-                                        <Box sx={{ mt: 1 }}>
-                                            {book.tags.map((tag) => (
-                                                <Chip
-                                                    key={tag.id}
-                                                    label={tag.name}
-                                                    size="small"
-                                                    sx={{ mr: 0.5, mb: 0.5 }}
-                                                />
-                                            ))}
-                                        </Box>
-                                    </span>
+                                        </Typography>                  
+                                        <br/>                                                           
+                                        {book.tags.map((tag) => (
+                                            <Chip
+                                                component="span"
+                                                key={tag.id}
+                                                label={tag.name}
+                                                size="small"
+                                                sx={{ mr: 0.5, mb: 0.5 }}
+                                            />
+                                        ))}                                    
+                                    </>                                                                                                                          
                                 }
                             />
                         </ListItemButton>
