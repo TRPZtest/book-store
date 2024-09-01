@@ -30,11 +30,10 @@ export function AddBook() {
 
     const handleAddBook = async (newBook: BookDTO) => {
         try {
-            const savedBook = await service.addBook(newBook);
-            console.log('Book added:', savedBook);
+            const savedBook = await service.addBook(newBook);            
             navigate('/');
         } catch (error) {
-            console.error('Error adding book:', error);
+            alert('Error adding book');
         }
     };
 
