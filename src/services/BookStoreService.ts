@@ -9,7 +9,7 @@ export class BookStoreService {
     private axiosInstance: AxiosInstance;
 
     constructor() {
-        this.URL = 'http://127.0.0.1:8000/api';
+        this.URL = process.env.REACT_API_BASE_URL + '/api' || 'http://127.0.0.1:8000/api';
         this.axiosInstance = axios.create({
             baseURL: this.URL,                    
         });
