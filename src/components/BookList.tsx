@@ -2,31 +2,52 @@ import { Fragment, useEffect, useState } from "react";
 import { BookStoreService } from "../services/BookStoreService";
 import { Book } from "../services/models/Book";
 import { GetBooksDTO } from "../services/models/GetBooksDTO";
-import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, Box, Chip, List, ListItem, ListItemButton, ListItemText, Pagination, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import {
+  Box,
+  Button,
+  Chip,
+  Icon,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Pagination,
+  Typography,
+} from "@mui/material";
 import { Link } from "react-router-dom";
+import { Delete } from "@mui/icons-material";
 
 export function BookList() {
+  const service = new BookStoreService();
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [pageSize] = useState<number>(5); // You can adjust the page size as needed
+  const [pageSize] = useState<number>(10);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [error, setError] = useState<string | null>(null);
 
   const fetchBooks = async (page: number) => {
     setLoading(true);
-    setError(null);
     try {
-      const service = new BookStoreService();
       const response: GetBooksDTO = await service.getBooks(page, pageSize);
       setBooks(response.books);
       setTotalPages(response.totalPageNumber);
     } catch (error) {
-      console.error('Error fetching books:', error);
-      setError('Error while fetching books');
+      console.error("Error fetching books:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (bookId: number) => {
+    if (window.confirm("Are you sure you want to delete this book?")) {
+      try {
+        await service.deleteBook(bookId);
+        fetchBooks(pageNumber);
+      } catch (error) {
+        alert("Error deleting book");
+      }
     }
   };
 
@@ -34,7 +55,10 @@ export function BookList() {
     fetchBooks(pageNumber);
   }, [pageNumber]);
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
     setPageNumber(value);
   };
 
@@ -47,16 +71,19 @@ export function BookList() {
       <Typography variant="h4" component="span">
         Books List
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
       <List>
         {books.map((book) => (
-          <ListItem key={book.id} disablePadding>
-            <ListItemButton component={Link} to={`/books/edit/${book.id}`}>
+          <ListItem key={book.id} disablePadding>   
               <ListItemText
-                primary={book.name}
+                primary={
+                    <>
+                        <Link to={`/books/edit/${book.id}`}>  {book.name}</Link>   
+                        <Button onClick={() => handleDelete(book.id)} startIcon={<Delete color="action"/>}/>                      
+                    </>                      
+                }
                 secondary={
                   <>
-                    <Typography component="span" variant="body2" color="textPrimary">
+                    <Typography component="span" color="textPrimary">                       
                       Category: {book.category.name}
                     </Typography>
                     <br />
@@ -68,11 +95,10 @@ export function BookList() {
                         size="small"
                         sx={{ mr: 0.5, mb: 0.5 }}
                       />
-                    ))}
-                  </>
+                    ))}                   
+                  </>                  
                 }
-              />
-            </ListItemButton>
+            />       
           </ListItem>
         ))}
       </List>

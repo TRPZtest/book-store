@@ -79,4 +79,14 @@ export class BookStoreService {
             throw error;
         }
     }
+
+    public async deleteBook(id : number) 
+    {
+        try {
+            await this.axiosInstance.delete(`/book`, { params: {id} });
+        } catch(error) {
+            console.error(`Error fetching categories:`, error);
+            throw error;
+        }       
+    }
 }
