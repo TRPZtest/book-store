@@ -34,7 +34,7 @@ export function BookList() {
       setBooks(response.books);
       setTotalPages(response.totalPageNumber);
     } catch (error) {
-      console.error("Error fetching books:", error);
+      alert("Error fetching books");
     } finally {
       setLoading(false);
     }
