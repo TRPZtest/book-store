@@ -17,7 +17,10 @@ export function EditBook() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const bookData = await service.getBookById(Number(id));
+                const bookData = await service.getBookById(Number(id));         
+                const tags = await service.getTags();              
+                const categories = await service.getAllCategories();
+                
                 setBook({
                     id: bookData.id,
                     name: bookData.name,
@@ -25,11 +28,7 @@ export function EditBook() {
                     categoryId: bookData.category.id,
                     tags: bookData.tags.map((tag) => tag.id),
                 });
-
-                const tags = await service.getTags();
                 setTags(tags);
-
-                const categories = await service.getAllCategories();
                 setCategories(categories);
             } catch (error) {
                 alert('Error fetching book: ' + error);

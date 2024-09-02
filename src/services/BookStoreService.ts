@@ -1,8 +1,10 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { Book } from "./models/Book";
-import { Tag } from "./models/Tag";
-import { Category } from "./models/Category";
 import { BookDTO } from "./models/BookDTO";
+import { Category } from "./models/Category";
+import { GetBooksDTO } from "./models/GetBooksDTO";
+import { Tag } from "./models/Tag";
+
 
 export class BookStoreService {
     private  URL : string;
@@ -15,11 +17,11 @@ export class BookStoreService {
         });
     }
 
-    public async getAllBooks(): Promise<Book[]> {
+    public async getBooks(pageNumber : number, pageSize : number): Promise<GetBooksDTO> {
         try {
-            const response: AxiosResponse<Book[]> = await this.axiosInstance.get(`${this.URL}/books`);
-            const books = response.data;
-            return books;
+            const response: AxiosResponse<GetBooksDTO> = await this.axiosInstance.get(`${this.URL}/books`, { params: { pageNumber, pageSize } });
+            const getBooksDTO = response.data;
+            return getBooksDTO;
         } catch (error) {
             console.error('Error fetching books:', error);
             throw error;
@@ -28,7 +30,7 @@ export class BookStoreService {
 
     public async getBookById(id: number): Promise<Book> {
         try {
-            const response: AxiosResponse<Book> = await this.axiosInstance.get(`/book/`, { params: { id: id } });
+            const response: AxiosResponse<Book> = await this.axiosInstance.get(`/book/`, { params: { id } });
             return response.data;
         } catch (error) {
             console.error(`Error fetching book with id ${id}:`, error);

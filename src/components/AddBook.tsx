@@ -15,10 +15,10 @@ export function AddBook() {
     useEffect(() => {
         async function fetchCategoriesAndTags() {
             try {
-                const categories = await service.getAllCategories();
-                setCategories(categories);
-
+                const categories = await service.getAllCategories();                
                 const tags = await service.getTags();
+
+                setCategories(categories);
                 setTags(tags);
             } catch (error) {
                 alert('Error fetching categories and tags');
